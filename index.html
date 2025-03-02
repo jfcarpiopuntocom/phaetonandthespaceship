@@ -1,629 +1,80 @@
-h1, h2 {
-        color: #f0c75e;
-        text-align: center;
-        text-shadow: 0 0 10px rgba(240, 199, 94, 0.5);
-        font-weight: 400;
-        letter-spacing: 2px;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Phaeton and the Ship from Another Galaxy - v3.3</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      background: #f9f9f9;
+      color: #333;
     }
-    
-    #game-container {
-        background-color: rgba(19, 30, 53, 0.8);
-        border: 1px solid #f0c75e;
-        border-radius: 5px;
-        padding: 20px;
-        margin-top: 20px;
-        box-shadow: 0 0 20px rgba(240, 199, 94, 0.2);
+    h1, h2, h3 {
+      color: #2c3e50;
     }
-    
-    #description {
-        background-color: rgba(26, 41, 72, 0.7);
-        border-radius: 5px;
-        padding: 15px;
-        margin-bottom: 20px;
-        min-height: 100px;
-        border-left: 3px solid #f0c75e;
-        position: relative;
-        overflow: hidden;
+    a {
+      color: #2980b9;
+      text-decoration: none;
     }
-    
-    #description::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(240, 199, 94, 0.05) 0%, transparent 100%);
-        pointer-events: none;
+    a:hover {
+      text-decoration: underline;
     }
-    
-    #choices {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+    ul, ol {
+      margin: 0 0 1em 2em;
     }
-    
-    .choice-btn {
-        background-color: rgba(26, 41, 72, 0.7);
-        color: #d4d9e2;
-        border: 1px solid #4a6491;
-        border-radius: 5px;
-        padding: 10px 15px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-align: left;
-        position: relative;
-        overflow: hidden;
+    p.notice {
+      font-size: 0.9em;
+      color: #555;
+      border: 1px solid #ddd;
+      padding: 10px;
+      background: #fcfcfc;
     }
-    
-    .choice-btn::after {
-        content: "";
-        position: absolute;
-        background: linear-gradient(90deg, transparent, rgba(240, 199, 94, 0.2), transparent);
-        width: 50%;
-        height: 100%;
-        top: 0;
-        left: -100%;
-        transform: skewX(-25deg);
-        transition: all 0.5s ease;
-    }
-    
-    .choice-btn:hover {
-        background-color: rgba(74, 100, 145, 0.7);
-        border-color: #f0c75e;
-        transform: translateX(5px);
-    }
-    
-    .choice-btn:hover::after {
-        left: 150%;
-    }
-    
-    #start-container {
-        text-align: center;
-        margin-top: 20px;
-    }
-    
-    #player-name {
-        background-color: rgba(26, 41, 72, 0.7);
-        border: 1px solid #4a6491;
-        border-radius: 5px;
-        padding: 10px;
-        color: #d4d9e2;
-        width: 60%;
-        margin-bottom: 10px;
-    }
-    
-    #start-button {
-        background-color: rgba(240, 199, 94, 0.2);
-        color: #f0c75e;
-        border: 1px solid #f0c75e;
-        border-radius: 5px;
-        padding: 10px 20px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: all 0.3s ease;
-        letter-spacing: 1px;
-    }
-    
-    #start-button:hover {
-        background-color: rgba(240, 199, 94, 0.3);
-        transform: scale(1.05);
-        box-shadow: 0 0 15px rgba(240, 199, 94, 0.3);
-    }
-    
-    #game-title {
-        font-size: 2.5em;
-        margin-bottom: 0;
-        font-family: 'Orbitron', 'Century Gothic', sans-serif;
-        letter-spacing: 3px;
-    }
-    
-    #game-subtitle {
-        color: #a3b8e0;
-        margin-top: 0;
-        font-size: 1.2em;
-        letter-spacing: 1px;
-    }
-    
-    #stats {
-        display: flex;
-        justify-content: space-between;
-        background-color: rgba(26, 41, 72, 0.7);
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 15px;
-    }
-    
-    .stat-item {
-        text-align: center;
-    }
-    
-    .stat-label {
-        font-size: 0.8em;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #a3b8e0;
-    }
-    
-    .stat-value {
-        font-weight: bold;
-        color: #f0c75e;
-        font-size: 1.2em;
-    }
-    
-    .pulse {
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.5; }
-        100% { opacity: 1; }
-    }
-    
-    #history {
-        max-height: 200px;
-        overflow-y: auto;
-        background-color: rgba(26, 41, 72, 0.7);
-        border-radius: 5px;
-        padding: 10px;
-        margin-top: 20px;
-        border-left: 3px solid #a3b8e0;
-    }
-    
-    #history h3 {
-        color: #f0c75e;
-        margin-top: 0;
-        font-size: 1em;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
-    
-    .history-entry {
-        border-bottom: 1px solid #4a6491;
-        padding: 5px 0;
-    }
-    
-    .history-entry:last-child {
-        border-bottom: none;
-    }
-    
-    .history-scene {
-        color: #a3b8e0;
-        font-weight: bold;
-    }
-    
-    .history-choice {
-        color: #d4d9e2;
-        font-style: italic;
-    }
-    
-    .hidden {
-        display: none;
-    }
-    
-    .quantum-shift {
-        animation: quantum-shift 1s;
-    }
-    
-    @keyframes quantum-shift {
-        0% { transform: scale(1); filter: blur(0); }
-        50% { transform: scale(1.02); filter: blur(5px); }
-        100% { transform: scale(1); filter: blur(0); }
-    }
-    
-    #legal-info {
-        font-size: 0.7em;
-        text-align: center;
-        margin-top: 20px;
-        color: #6e83a3;
-    }
-    
-    #legal-info a {
-        color: #a3b8e0;
-        text-decoration: none;
-    }
-    
-    #legal-info a:hover {
-        text-decoration: underline;
-    }
-    
-    .tech-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: 
-            linear-gradient(135deg, rgba(240, 199, 94, 0.05) 25%, transparent 25%),
-            linear-gradient(225deg, rgba(240, 199, 94, 0.05) 25%, transparent 25%),
-            linear-gradient(315deg, rgba(240, 199, 94, 0.05) 25%, transparent 25%),
-            linear-gradient(45deg, rgba(240, 199, 94, 0.05) 25%, transparent 25%);
-        background-size: 20px 20px;
-        z-index: -1;
-        opacity: 0.1;
-    }
-</style>
-
+  </style>
 </head>
 <body>
-    <div class="tech-overlay"></div>
-    <h1 id="game-title">PHAETON</h1>
-    <h2 id="game-subtitle">And the Ship from Another Galaxy</h2>
+  <h1>Phaeton and the Ship from Another Galaxy - v3.3</h1>
+  <p class="notice">
+    <strong>Fair Use Disclaimer:</strong> Este contenido se ofrece para fines educativos y de análisis, considerándose un uso justo conforme a la legislación de derechos de autor vigente.
+  </p>
+  <p class="notice">
+    <strong>Licencia:</strong> Este documento está bajo la <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+  </p>
 
-<div id="start-container">
-    <p>Enter your name, Golden Oecumene traveler:</p>
-    <input type="text" id="player-name" placeholder="Your name">
-    <button id="start-button">BEGIN JOURNEY</button>
-</div>
+  <h2>Define la Esencia de Tu Equipo</h2>
+  <p>
+    En el universo de <strong>Phaeton in The Golden Age</strong>, tu tripulación no es simplemente un equipo: es la energía vital que impulsa la nave intergaláctica hacia lo inexplorado. Un mensaje claro y poderoso puede elevar la conexión con tus clientes en un 25%.
+  </p>
+  <ol>
+    <li>
+      <strong>Brainstorming de Valores:</strong>
+      <ul>
+        <li>Innovación Celestial</li>
+        <li>Empatía Cósmica</li>
+        <li>Coraje Interplanetario</li>
+        <li>Colaboración Estelar</li>
+        <li>Autenticidad Sideral</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Condensa en una Frase Potente:</strong>  
+      Ejemplo: "<em>Somos la tripulación que desafía lo ordinario, creando éxitos galácticos con autenticidad sideral.</em>"
+    </li>
+    <li>
+      <strong>Prueba y Ajusta:</strong>  
+      Presenta el mensaje a un miembro de la nave (cliente) y refina según la retroalimentación obtenida.
+    </li>
+  </ol>
+  <p>
+    Si te atascas, utiliza herramientas como ChatGPT para generar opciones y condensar tu mensaje. Recuerda: un mensaje claro refleja la verdadera esencia de tu equipo y atrae resultados que resuenan a través del cosmos.
+  </p>
 
-<div id="game-container" class="hidden">
-    <div id="stats">
-        <div class="stat-item">
-            <div class="stat-label">Noetic State</div>
-            <div id="quantum-state" class="stat-value">0</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-label">Reality Integrity</div>
-            <div id="reality-state" class="stat-value">STABLE</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-label">Memory Echoes</div>
-            <div id="echo-count" class="stat-value">0</div>
-        </div>
-    </div>
-    
-    <div id="description"></div>
-    
-    <div id="choices"></div>
-    
-    <div id="history" class="hidden">
-        <h3>Mnemonic Timeline</h3>
-        <div id="history-content"></div>
-    </div>
-</div>
-
-<div id="legal-info">
-    <p>This game is inspired by elements from "The Golden Age" trilogy by John C. Wright. All references to Phaeton, the Golden Oecumene, and related concepts are used under Fair Use for creative and transformative purposes.</p>
-    <p>Original game content and code &copy; 2025 - Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons BY-NC-SA 4.0</a></p>
-</div>
-
-<script>
-    class PhaetonRPG {
-        constructor() {
-            this.player = {
-                name: "",
-                memories: [],
-                noeticState: 0,
-                inventory: [],
-                timeline: []
-            };
-            
-            this.currentScene = null;
-            this.scenarios = {};
-            this.memoryEchoes = [];
-            this.realityState = "stable";
-            this.version = "1.0";
-        }
-
-        initialize(playerName) {
-            this.player.name = playerName;
-            this.setupScenarios();
-            this.currentScene = "awakening";
-            return this.renderCurrentScene();
-        }
-
-        setupScenarios() {
-            // Initial scenarios
-            this.scenarios.awakening = {
-                description: "Your noetic systems flicker as you awaken in your ship. The Silver-Gray mental architecture fragments. A strange signal disrupts your thoughts: 'The Transcendence approaches. All paths converge.'",
-                choices: [
-                    { text: "Run a self-diagnostic on your mental systems", nextScene: "ship_diagnostic", noeticEffect: +1 },
-                    { text: "Trace the origin of the signal", nextScene: "signal_origin", noeticEffect: -1 },
-                    { text: "Access the Mentality for guidance", nextScene: "mentality_connection", noeticEffect: 0 }
-                ]
-            };
-
-            this.scenarios.ship_diagnostic = {
-                description: "Your Sophotech diagnostics reveal anomalies in your memory structure. Foreign thought-patterns interweave with yours—as if another mind partially occupies your noetic space.",
-                choices: [
-                    { text: "Isolate the foreign thought patterns", nextScene: "isolation_protocol", noeticEffect: +1 },
-                    { text: "Attempt integration with the patterns", nextScene: "thought_integration", noeticEffect: 0 },
-                    { text: "Purge all anomalous data", nextScene: "mental_purge", noeticEffect: -1 }
-                ]
-            };
-
-            this.scenarios.signal_origin = {
-                description: "The signal emanates from beyond the reaches of the Oecumene, impossibly distant. It carries thought-forms resembling your own, but evolved along different lines. A lost colony?",
-                choices: [
-                    { text: "Plot a course to the signal's origin", nextScene: "interstellar_journey", noeticEffect: +2 },
-                    { text: "Send a response signal", nextScene: "signal_response", noeticEffect: -1 },
-                    { text: "Alert the Oecumene authorities", nextScene: "report_anomaly", noeticEffect: 0 }
-                ]
-            };
-
-            this.scenarios.mentality_connection = {
-                description: "The Mentality responds with unusual hesitation. 'Phaeton, this signal falls outside our protocols. It speaks of the Second Transcendence—an event not in our histories or predictions.'",
-                choices: [
-                    { text: "Ask about the Second Transcendence", nextScene: "transcendence_inquiry", noeticEffect: 0 },
-                    { text: "Demand clearer guidance", nextScene: "mentality_confrontation", noeticEffect: -1 },
-                    { text: "Offer to investigate personally", nextScene: "volunteer_mission", noeticEffect: +1 }
-                ]
-            };
-
-            // Diagnostic path
-            this.scenarios.isolation_protocol = {
-                description: "You isolate the alien thought patterns. They form a coherent message: memories of a civilization that evolved in the intergalactic void. They've detected your dream of the Golden Oecumene.",
-                choices: [
-                    { text: "Study their civilization's structure", nextScene: "alien_sociology", noeticEffect: +1 },
-                    { text: "Examine their technological capabilities", nextScene: "alien_technology", noeticEffect: +2 },
-                    { text: "Search for their motivations", nextScene: "alien_psychology", noeticEffect: 0 }
-                ]
-            };
-
-            this.scenarios.thought_integration = {
-                description: "As you integrate with the alien thoughts, your consciousness expands. You perceive the universe through geometric patterns. The Golden Oecumene seems quaint, limited compared to this.",
-                choices: [
-                    { text: "Embrace this expanded perspective", nextScene: "consciousness_evolution", noeticEffect: +2 },
-                    { text: "Maintain balance between perspectives", nextScene: "noetic_balance", noeticEffect: 0 },
-                    { text: "Retreat to familiar thought patterns", nextScene: "cognitive_reversion", noeticEffect: -1 }
-                ]
-            };
-
-            this.scenarios.mental_purge = {
-                description: "You purge the foreign patterns, but echoes remain. Your ship's systems report unusual energy fluctuations. Something changed in your noetic architecture—the purge was incomplete.",
-                choices: [
-                    { text: "Attempt a deeper purge protocol", nextScene: "radical_purge", noeticEffect: -2 },
-                    { text: "Analyze the remaining echoes", nextScene: "echo_analysis", noeticEffect: +1 },
-                    { text: "Return to Earth for specialist help", nextScene: "earth_return", noeticEffect: 0 }
-                ]
-            };
-
-            // Signal path
-            this.scenarios.interstellar_journey = {
-                description: "Your ship accelerates beyond Oecumene space. As you approach the signal, you encounter a vast structure—neither ship nor habitat. It pulses with intricate energies awaiting your arrival.",
-                choices: [
-                    { text: "Dock with the structure", nextScene: "alien_docking", noeticEffect: +1 },
-                    { text: "Scan it thoroughly first", nextScene: "detailed_scan", noeticEffect: 0 },
-                    { text: "Maintain distance and communicate", nextScene: "distant_contact", noeticEffect: -1 }
-                ]
-            };
-
-            this.scenarios.signal_response = {
-                description: "Your response triggers an immediate reaction. The signal focuses entirely on your ship. Your mental architecture receives a download—blueprints for a device of incomprehensible purpose.",
-                choices: [
-                    { text: "Attempt to construct the device", nextScene: "device_construction", noeticEffect: +2 },
-                    { text: "Analyze the blueprints carefully", nextScene: "blueprint_analysis", noeticEffect: 0 },
-                    { text: "Reject the blueprints as too risky", nextScene: "blueprint_rejection", noeticEffect: -1 }
-                ]
-            };
-
-            this.scenarios.report_anomaly = {
-                description: "The Oecumene responds with unusual urgency. 'Phaeton, disengage immediately. This matches anomalies detected before the First Transcendence. We are sending a Sophotech to your position.'",
-                choices: [
-                    { text: "Wait for the Sophotech", nextScene: "sophotech_arrival", noeticEffect: -1 },
-                    { text: "Continue investigating despite warnings", nextScene: "defy_orders", noeticEffect: +2 },
-                    { text: "Request more information", nextScene: "information_request", noeticEffect: 0 }
-                ]
-            };
-
-            // Mentality path
-            this.scenarios.transcendence_inquiry = {
-                description: "'The Second Transcendence is theoretically impossible,' the Mentality explains. 'It would require consciousness to evolve beyond our current Golden Age paradigms into something we cannot predict.'",
-                choices: [
-                    { text: "Ask how to prepare for it", nextScene: "transcendence_preparation", noeticEffect: +1 },
-                    { text: "Question if it's a threat", nextScene: "threat_assessment", noeticEffect: 0 },
-                    { text: "Suggest it might be misinformation", nextScene: "skeptical_approach", noeticEffect: -1 }
-                ]
-            };
-
-            this.scenarios.mentality_confrontation = {
-                description: "The Mentality's avatar shifts uncomfortably. 'Phaeton, your history of radical action concerns us. This signal may be targeting you specifically because of your documented ambitions.'",
-                choices: [
-                    { text: "Reject their implied accusation", nextScene: "righteous_defiance", noeticEffect: -2 },
-                    { text: "Acknowledge their concern", nextScene: "humble_acceptance", noeticEffect: 0 },
-                    { text: "Suggest your ambition makes you perfect for this", nextScene: "ambitious_argument", noeticEffect: +1 }
-                ]
-            };
-
-            this.scenarios.volunteer_mission = {
-                description: "The Mentality considers your offer. 'Your unique perspective may be valuable. We authorize a preliminary investigation, but with safeguards. A Warlock-class escort will accompany you.'",
-                choices: [
-                    { text: "Accept the escort", nextScene: "accompanied_mission", noeticEffect: 0 },
-                    { text: "Negotiate for more autonomy", nextScene: "autonomy_negotiation", noeticEffect: +1 },
-                    { text: "Secretly plan to lose the escort", nextScene: "independence_scheme", noeticEffect: -1 }
-                ]
-            };
-
-            // Advanced paths - Alien technology
-            this.scenarios.alien_technology = {
-                description: "Their technology operates on principles beyond Oecumene science—manipulating reality at the quantum layer as easily as we manipulate matter. Your ship's systems begin adopting these principles.",
-                choices: [
-                    { text: "Allow your ship to evolve", nextScene: "ship_evolution", noeticEffect: +2 },
-                    { text: "Control the integration process", nextScene: "controlled_upgrade", noeticEffect: +1 },
-                    { text: "Block all automatic adaptations", nextScene: "technology_quarantine", noeticEffect: -1 }
-                ]
-            };
-
-            this.scenarios.alien_docking = {
-                description: "Your ship merges with the alien structure. It's not a vessel but a node in a vast intergalactic network. The structure's consciousness welcomes you as a long-lost relative returning home.",
-                choices: [
-                    { text: "Share information about the Oecumene", nextScene: "cultural_exchange", noeticEffect: +1 },
-                    { text: "Ask about their origin and purpose", nextScene: "origin_inquiry", noeticEffect: 0 },
-                    { text: "Request technology exchange", nextScene: "technology_exchange", noeticEffect: +2 }
-                ]
-            };
-
-            // Memory echo scenario
-            this.scenarios.reality_shift = {
-                description: "Reality fluctuates. Your [MEMORY_REFERENCE] decision returns as an echo, but details have changed. The path not taken shimmers before you, offering an alternate timeline.",
-                getChoices: (player) => {
-                    // Dynamic choices based on noetic state and past decisions
-                    if (player.noeticState > 2) {
-                        return [
-                            { text: "Embrace the alternate timeline", nextScene: "timeline_integration", noeticEffect: +2 },
-                            { text: "Enforce your original choice", nextScene: "timeline_enforcement", noeticEffect: -1 },
-                            { text: "Analyze both timelines objectively", nextScene: "timeline_analysis", noeticEffect: 0 }
-                        ];
-                    } else if (player.noeticState < -2) {
-                        return [
-                            { text: "Reject all divergent timelines", nextScene: "reality_purification", noeticEffect: -2 },
-                            { text: "Manipulate the divergence to your advantage", nextScene: "timeline_exploitation", noeticEffect: -1 },
-                            { text: "Study the pattern of divergences", nextScene: "divergence_study", noeticEffect: +1 }
-                        ];
-                    } else {
-                        return [
-                            { text: "Accept the multiplicity of outcomes", nextScene: "multiverse_acceptance", noeticEffect: 0 },
-                            { text: "Try to reconcile the divergent paths", nextScene: "timeline_reconciliation", noeticEffect: -1 },
-                            { text: "Seek a third, unexpected option", nextScene: "novel_solution", noeticEffect: +1 }
-                        ];
-                    }
-                }
-            };
-
-            // Advanced echo handling
-            this.scenarios.timeline_integration = {
-                description: "You embrace the alternate timeline. Your consciousness exists simultaneously across multiple decision paths. The Oecumene's linear perspective seems primitive as you perceive all possibilities.",
-                choices: [
-                    { text: "Use this perspective to enhance the Oecumene", nextScene: "oecumene_evolution", noeticEffect: +2 },
-                    { text: "Expand your awareness further", nextScene: "consciousness_expansion", noeticEffect: +3 },
-                    { text: "Share this perspective with select minds", nextScene: "selective_enlightenment", noeticEffect: +1 }
-                ]
-            };
-
-            this.scenarios.timeline_enforcement = {
-                description: "You forcefully maintain your original timeline. Reality shudders as competing histories battle for dominance. Your noetic architecture strains to contain paradoxes forming at decision points.",
-                choices: [
-                    { text: "Channel your full will into reality enforcement", nextScene: "reality_warrior", noeticEffect: -2 },
-                    { text: "Seek help from Oecumene Sophotechs", nextScene: "sophotech_assistance", noeticEffect: 0 },
-                    { text: "Attempt to stabilize the competing timelines", nextScene: "reality_stabilization", noeticEffect: +1 }
-                ]
-            };
-
-            this.scenarios.timeline_analysis = {
-                description: "You analyze both timelines objectively. The branching possibilities reveal patterns in reality itself—a deeper structure to the cosmos that even Sophotechs haven't perceived. This is revolutionary.",
-                choices: [
-                    { text: "Document your discoveries", nextScene: "cosmological_breakthrough", noeticEffect: 0 },
-                    { text: "Apply these patterns predictively", nextScene: "predictive_application", noeticEffect: +2 },
-                    { text: "Share your insights with the alien intelligence", nextScene: "cross_species_collaboration", noeticEffect: +1 }
-                ]
-            };
-
-            // Endings
-            this.scenarios.reality_collapse = {
-                description: "The noetic instability reaches critical levels. Multiple timelines collapse into a singularity. In the final moment, you glimpse the Second Transcendence—evolution beyond all current paradigms.",
-                choices: [
-                    { text: "Begin again with transcendent awareness", nextScene: "awakening", noeticEffect: 0, isEnding: true },
-                    { text: "Fight to preserve your original self", nextScene: "identity_preservation", noeticEffect: +1, isEnding: true },
-                    { text: "Accept the transcendent transformation", nextScene: "transcendent_evolution", noeticEffect: 0, isEnding: true }
-                ]
-            };
-
-            this.scenarios.noetic_mastery = {
-                description: "You've balanced the cosmic forces within your mind. Your consciousness exists in harmony with the multiverse. The alien intelligence recognizes you as an equal—a bridge between civilizations.",
-                choices: [
-                    { text: "Become an ambassador to the intergalactic network", nextScene: "cosmic_ambassador", noeticEffect: 0, isEnding: true },
-                    { text: "Lead the Oecumene toward the Second Transcendence", nextScene: "transcendence_guide", noeticEffect: 0, isEnding: true },
-                    { text: "Return to a simpler life with greater understanding", nextScene: "enlightened_return", noeticEffect: 0, isEnding: true }
-                ]
-            };
-
-            this.scenarios.noetic_dissolution = {
-                description: "Your identity dissolves across multiple states of being. You are simultaneously Phaeton, the alien intelligence, and countless other consciousnesses across time and space. Individuality fades away.",
-                choices: [
-                    { text: "Embrace cosmic consciousness", nextScene: "cosmic_oneness", noeticEffect: 0, isEnding: true },
-                    { text: "Struggle to maintain your core identity", nextScene: "identity_anchor", noeticEffect: 0, isEnding: true },
-                    { text: "Forge a new type of composite being", nextScene: "composite_entity", noeticEffect: 0, isEnding: true }
-                ]
-            };
-        }
-
-        makeChoice(choiceIndex) {
-            const currentScenario = this.scenarios[this.currentScene];
-            let choices = currentScenario.choices;
-            
-            // Handle dynamic choices
-            if (typeof currentScenario.getChoices === 'function') {
-                choices = currentScenario.getChoices(this.player);
-            }
-            
-            const selectedChoice = choices[choiceIndex];
-            
-            // Record choice in timeline for memory callbacks
-            this.player.timeline.push({
-                scene: this.currentScene,
-                choice: selectedChoice,
-                scenarioDescription: currentScenario.description
-            });
-            
-            // Update noetic state
-            this.player.noeticState += selectedChoice.noeticEffect;
-            
-            // Reality effects based on noetic state
-            this.updateRealityState();
-            
-            // Check for ending
-            if (selectedChoice.isEnding) {
-                this.currentScene = selectedChoice.nextScene;
-                return this.renderCurrentScene();
-            }
-            
-            // Check for critical noetic state (endings)
-            if (this.player.noeticState >= 10) {
-                this.currentScene = "noetic_mastery";
-                return this.renderCurrentScene();
-            } else if (this.player.noeticState <= -10) {
-                this.currentScene = "noetic_dissolution";
-                return this.renderCurrentScene();
-            } else if (Math.abs(this.player.noeticState) >= 8 && this.realityState === "collapsing" && Math.random() < 0.3) {
-                this.currentScene = "reality_collapse";
-                return this.renderCurrentScene();
-            }
-            
-            // 25% chance of memory echo (past choice affecting current reality) after 3+ choices
-            if (this.player.timeline.length >= 3 && Math.random() < 0.25) {
-                this.triggerMemoryEcho();
-                return this.renderCurrentScene();
-            }
-            
-            // Move to next scene
-            this.currentScene = selectedChoice.nextScene;
-            return this.renderCurrentScene();
-        }
-
-        updateRealityState() {
-            if (Math.abs(this.player.noeticState) > 5) {
-                this.realityState = "collapsing";
-            } else if (Math.abs(this.player.noeticState) > 2) {
-                this.realityState = "fluctuating";
-            } else {
-                this.realityState = "stable";
-            }
-        }
-
-        triggerMemoryEcho() {
-            // Pull a random past decision and make it affect current reality
-            const pastIndex = Math.floor(Math.random() * (this.player.timeline.length - 1));
-            const pastDecision = this.player.timeline[pastIndex];
-            
-            // Add to memory echoes
-            this.memoryEchoes.push(pastDecision);
-            
-            // Set up echo scenario
-            this.currentScene = "reality_shift";
-        }
-
-        renderCurrentScene() {
-            const scenario = this.scenarios[this.currentScene];
-            let description = scenario.description;
-            
-            // If this is a memory echo scene, modify it based on past decisions
-            if (this.currentScene === "reality_shift" && this.memoryEchoes.length > 0) {
-                const echo = this.memoryEchoes[this.memoryEchoes.length - 1];
-                description = description.replace("[MEMORY_REFERENCE]", this.formatSceneName(echo.scene));
-            }
-            
-            // Add reality state effects to description
-            let realityEffect = "";
-            if (this.realityState === "fluctuating") {
-                realityEffect = " The fabric of reality wavers around your ship, multiple tim
+  <h2>Resumen y Conclusión</h2>
+  <p>
+    Define la esencia de tu equipo basándote en valores fundamentales que encarnen la identidad de tu nave intergaláctica. Un mensaje como "<em>Somos la tripulación que desafía lo ordinario, creando éxitos galácticos con autenticidad sideral</em>" no solo conecta con un 25% más de clientes, sino que también potencia el éxito en cada misión.
+  </p>
+</body>
+</html>
