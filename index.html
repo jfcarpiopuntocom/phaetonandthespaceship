@@ -1,80 +1,122 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Phaeton and the Ship from Another Galaxy - v3.3</title>
+  <title>Echoes of the Void - RPG</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.5;
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-      background: #f9f9f9;
-      color: #333;
-    }
-    h1, h2, h3 {
-      color: #2c3e50;
-    }
-    a {
-      color: #2980b9;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    ul, ol {
-      margin: 0 0 1em 2em;
-    }
-    p.notice {
-      font-size: 0.9em;
-      color: #555;
-      border: 1px solid #ddd;
-      padding: 10px;
-      background: #fcfcfc;
-    }
+    body { font-family: monospace; background: #1a1a1a; color: #0f0; padding: 20px; max-width: 600px; margin: auto; }
+    .scene { margin: 15px 0; }
+    .text { font-size: 1em; line-height: 1.4; }
+    .choices { margin-top: 10px; }
+    button { background: #0f0; color: #000; border: none; padding: 5px 10px; cursor: pointer; margin: 5px; }
+    button:hover { background: #0a0; }
   </style>
 </head>
 <body>
-  <h1>Phaeton and the Ship from Another Galaxy - v3.3</h1>
-  <p class="notice">
-    <strong>Fair Use Disclaimer:</strong> Este contenido se ofrece para fines educativos y de análisis, considerándose un uso justo conforme a la legislación de derechos de autor vigente.
-  </p>
-  <p class="notice">
-    <strong>Licencia:</strong> Este documento está bajo la <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
-  </p>
+  <h1>Echoes of the Void</h1>
+  <div id="game"></div>
+  <script>
+    const gameDiv = document.getElementById('game');
+    let resonance = 0; // Tracks Void Resonance (affects outcomes)
+    let health = 10;
+    let power = 5;
 
-  <h2>Define la Esencia de Tu Equipo</h2>
-  <p>
-    En el universo de <strong>Phaeton in The Golden Age</strong>, tu tripulación no es simplemente un equipo: es la energía vital que impulsa la nave intergaláctica hacia lo inexplorado. Un mensaje claro y poderoso puede elevar la conexión con tus clientes en un 25%.
-  </p>
-  <ol>
-    <li>
-      <strong>Brainstorming de Valores:</strong>
-      <ul>
-        <li>Innovación Celestial</li>
-        <li>Empatía Cósmica</li>
-        <li>Coraje Interplanetario</li>
-        <li>Colaboración Estelar</li>
-        <li>Autenticidad Sideral</li>
-      </ul>
-    </li>
-    <li>
-      <strong>Condensa en una Frase Potente:</strong>  
-      Ejemplo: "<em>Somos la tripulación que desafía lo ordinario, creando éxitos galácticos con autenticidad sideral.</em>"
-    </li>
-    <li>
-      <strong>Prueba y Ajusta:</strong>  
-      Presenta el mensaje a un miembro de la nave (cliente) y refina según la retroalimentación obtenida.
-    </li>
-  </ol>
-  <p>
-    Si te atascas, utiliza herramientas como ChatGPT para generar opciones y condensar tu mensaje. Recuerda: un mensaje claro refleja la verdadera esencia de tu equipo y atrae resultados que resuenan a través del cosmos.
-  </p>
+    function displayScene(text, options) {
+      const scene = document.createElement('div');
+      scene.className = 'scene';
+      scene.innerHTML = `<p class="text">${text}</p><div class="choices"></div>`;
+      gameDiv.appendChild(scene);
+      const choiceDiv = scene.querySelector('.choices');
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.textContent = opt.text;
+        btn.onclick = () => {
+          resonance += opt.resonance;
+          health += opt.health || 0;
+          power += opt.power || 0;
+          gameDiv.innerHTML = '';
+          opt.next();
+        };
+        choiceDiv.appendChild(btn);
+      });
+    }
 
-  <h2>Resumen y Conclusión</h2>
-  <p>
-    Define la esencia de tu equipo basándote en valores fundamentales que encarnen la identidad de tu nave intergaláctica. Un mensaje como "<em>Somos la tripulación que desafía lo ordinario, creando éxitos galácticos con autenticidad sideral</em>" no solo conecta con un 25% más de clientes, sino que también potencia el éxito en cada misión.
-  </p>
+    // Initial Scene
+    displayScene(
+      'You awake in a shattered pod on a derelict ship. A hum fills the void. Shadows twist. Do you search the pod or listen to the hum?',
+      [
+        { text: 'Search pod', resonance: 1, power: 2, next: scene2a },
+        { text: 'Listen to hum', resonance: 3, health: -1, next: scene2b }
+      ]
+    );
+
+    function scene2a() {
+      displayScene(
+        'You find a glowing shard in the pod. It pulses with energy. The hum grows louder. Absorb it or toss it into the void?',
+        [
+          { text: 'Absorb shard', resonance: 2, power: 3, next: scene3a },
+          { text: 'Toss shard', resonance: -1, health: 1, next: scene3b }
+        ]
+      );
+    }
+
+    function scene2b() {
+      displayScene(
+        'The hum reveals a rift in space. Whispers offer power or peace. Do you reach into the rift or resist the voices?',
+        [
+          { text: 'Reach in', resonance: 4, power: 2, health: -2, next: scene3c },
+          { text: 'Resist', resonance: -2, health: 2, next: scene3d }
+        ]
+      );
+    }
+
+    function scene3a() {
+      displayScene(
+        `Shard fuses with you. Power surges. Resonance: ${resonance}. Shadows attack! Fight or flee through the ship?`,
+        [
+          { text: 'Fight', resonance: 1, health: -2, power: 1, next: end },
+          { text: 'Flee', resonance: 2, health: 1, next: end }
+        ]
+      );
+    }
+
+    function scene3b() {
+      displayScene(
+        `Shard vanishes. Hum fades. Resonance: ${resonance}. A drone emerges from the dark. Hack it or destroy it?`,
+        [
+          { text: 'Hack', resonance: 2, power: 2, next: end },
+          { text: 'Destroy', resonance: -1, health: -1, next: end }
+        ]
+      );
+    }
+
+    function scene3c() {
+      displayScene(
+        `Rift grants power but scars you. Resonance: ${resonance}. Ship trembles. Seal rift or harness its energy?`,
+        [
+          { text: 'Seal', resonance: -3, health: 2, next: end },
+          { text: 'Harness', resonance: 5, power: 3, next: end }
+        ]
+      );
+    }
+
+    function scene3d() {
+      displayScene(
+        `Voices fade. You’re calm. Resonance: ${resonance}. A portal opens ahead. Step through or explore more?`,
+        [
+          { text: 'Step through', resonance: 3, next: end },
+          { text: 'Explore', resonance: 1, power: 1, next: end }
+        ]
+      );
+    }
+
+    function end() {
+      const outcome = resonance > 5 ? 'You master the void!' : 'The void consumes you.';
+      displayScene(
+        `Health: ${health}, Power: ${power}, Resonance: ${resonance}. ${outcome} Play again?`,
+        [{ text: 'Restart', resonance: 0, next: () => { location.reload(); } }]
+      );
+    }
+  </script>
 </body>
 </html>
